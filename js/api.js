@@ -27,15 +27,26 @@ const API = (() => {
   /* ---------- Live backend transport ---------- */
 
   async function gasGet(action, params = {}) {
+    const url = new URL(CONFIG.GAS_URL);
+    url.searchParams.set("action", action);
+    Object.entries(params).forEach(([k, v]) => { if (v !== undefined && v !== null) url.searchParams.set(k, v); });
+    const res = await fetch(url.toString(), { method: "GET" });
+    return res.json();
+  }
+
+  // GET endpoints return different shapes (arrays, single objects) depending
+  // on the endpoint, unlike POST actions which always return {ok, message}.
+  // On network failure we can't return a generic {ok:false} object here —
+  // callers like `children.map(...)` would crash on it — so each call site
+  // provides its own safe fallback value (e.g. [] for lists, null for a
+  // single record) and we just surface the failure as a toast.
+  async function safeGet(action, params, fallback) {
     try {
-      const url = new URL(CONFIG.GAS_URL);
-      url.searchParams.set("action", action);
-      Object.entries(params).forEach(([k, v]) => { if (v !== undefined && v !== null) url.searchParams.set(k, v); });
-      const res = await fetch(url.toString(), { method: "GET" });
-      return await res.json();
+      return await gasGet(action, params);
     } catch (err) {
       console.error("GAS GET failed:", action, err);
-      return { ok: false, message: "Gagal terhubung ke server. Cek koneksi internet atau GAS_URL di config.js." };
+      if (window.App?.toast) App.toast("Gagal memuat data dari server", "❌");
+      return fallback;
     }
   }
 
@@ -159,7 +170,7 @@ const API = (() => {
     },
 
     async getDashboard() {
-      if (isLive()) return gasGet("dashboard");
+      if (isLive()) return safeGet("dashboard", {}, { children: [], totalBalance: 0, totalSavings: 0, needsCount: 0, timeline: [] });
       await delay();
       const db = load();
       const totalBalance = db.children.reduce((a, c) => a + c.balance, 0);
@@ -175,11 +186,11 @@ const API = (() => {
     },
 
     async getChildren() {
-      if (isLive()) return gasGet("children");
+      if (isLive()) return safeGet("children", {}, []);
       await delay(); return load().children;
     },
     async getChild(id) {
-      if (isLive()) return gasGet("child", { childId: id });
+      if (isLive()) return safeGet("child", { childId: id }, null);
       await delay(); return load().children.find(c => c.id === id);
     },
 
@@ -195,7 +206,7 @@ const API = (() => {
     },
 
     async getWallet(childId) {
-      if (isLive()) return gasGet("wallet", { childId });
+      if (isLive()) return safeGet("wallet", { childId }, { balance: 0, transactions: [] });
       await delay();
       const db = load();
       const child = db.children.find(c => c.id === childId);
@@ -204,7 +215,7 @@ const API = (() => {
     },
 
     async getTransactions(childId) {
-      if (isLive()) return gasGet("transactions", { childId });
+      if (isLive()) return safeGet("transactions", { childId }, []);
       await delay();
       const db = load();
       return db.transactions.filter(t => !childId || t.childId === childId)
@@ -212,28 +223,28 @@ const API = (() => {
     },
 
     async getSaving(childId) {
-      if (isLive()) return gasGet("saving", { childId });
+      if (isLive()) return safeGet("saving", { childId }, []);
       await delay();
       const db = load();
       return db.savings.filter(s => !childId || s.childId === childId);
     },
 
     async getWishlist(childId) {
-      if (isLive()) return gasGet("wishlist", { childId });
+      if (isLive()) return safeGet("wishlist", { childId }, []);
       await delay();
       const db = load();
       return db.wishlist.filter(w => !childId || w.childId === childId);
     },
 
     async getNeeds(childId) {
-      if (isLive()) return gasGet("needs", { childId });
+      if (isLive()) return safeGet("needs", { childId }, []);
       await delay();
       const db = load();
       return db.needs.filter(n => !childId || n.childId === childId);
     },
 
     async getTimeline() {
-      if (isLive()) return gasGet("timeline");
+      if (isLive()) return safeGet("timeline", {}, []);
       await delay();
       const db = load();
       return db.timeline.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -393,7 +404,7 @@ const API = (() => {
     /* ---------- Modul Sekolah ---------- */
 
     async getSchool(childId) {
-      if (isLive()) return gasGet("school", { childId });
+      if (isLive()) return safeGet("school", { childId }, []);
       await delay();
       const db = load();
       db.school = db.school || [];
@@ -424,7 +435,7 @@ const API = (() => {
     /* ---------- Modul Kesehatan ---------- */
 
     async getHealth(childId) {
-      if (isLive()) return gasGet("health", { childId });
+      if (isLive()) return safeGet("health", { childId }, []);
       await delay();
       const db = load();
       db.health = db.health || [];
@@ -453,7 +464,7 @@ const API = (() => {
     },
 
     async getSettings() {
-      if (isLive()) return gasGet("settings");
+      if (isLive()) return safeGet("settings", {}, {});
       await delay(100); return load().settings;
     },
     async saveSettings(settings) {
