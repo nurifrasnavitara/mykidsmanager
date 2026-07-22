@@ -2,7 +2,7 @@
    service-worker.js — basic offline cache (app shell strategy)
    =========================================================== */
 
-const CACHE_NAME = "mkm-cache-v2";
+const CACHE_NAME = "mkm-cache-v3";
 const APP_SHELL = [
   "index.html",
   "login.html",
@@ -47,22 +47,22 @@ self.addEventListener("activate", event => {
   );
 });
 
-// Cache-first for app shell, network-first fallback for everything else
+// Network-first for same-origin app files: always try to fetch the latest
+// version from the server, and only fall back to the cached copy if the
+// network is unavailable (offline). This avoids the app getting stuck on
+// an old cached version after every update — cache-first was cheaper but
+// meant bug fixes silently never reached returning visitors.
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
+  if (!event.request.url.startsWith(self.location.origin)) return; // let cross-origin (GAS API, CDNs) pass through untouched
 
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request)
-        .then(response => {
-          const clone = response.clone();
-          if (event.request.url.startsWith(self.location.origin)) {
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => caches.match("dashboard.html"));
-    })
+    fetch(event.request)
+      .then(response => {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        return response;
+      })
+      .catch(() => caches.match(event.request).then(cached => cached || caches.match("dashboard.html")))
   );
 });
