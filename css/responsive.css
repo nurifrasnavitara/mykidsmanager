@@ -1,0 +1,29 @@
+/* ===========================================================
+   Responsive — tablet & desktop enhancements
+   Base styles in style.css are mobile-first.
+   =========================================================== */
+
+/* Tablet */
+@media (min-width:600px){
+  .container{ max-width:600px; }
+  .menu-grid{ grid-template-columns:repeat(5,1fr); }
+  .app-header{ border-radius:0 0 40px 40px; padding:32px 26px 54px; }
+}
+
+/* Desktop */
+@media (min-width:900px){
+  .container{ max-width:640px; padding:0 32px; }
+  .card-grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+}
+
+/* Small phones */
+@media (max-width:340px){
+  .menu-grid{ grid-template-columns:repeat(3,1fr); }
+  .stat-pill{ min-width:118px; }
+}
+
+/* Landscape phones */
+@media (max-height:480px) and (orientation:landscape){
+  .splash .logo-emoji{ font-size:44px; }
+  .app-header{ padding-top:16px; padding-bottom:30px; }
+}

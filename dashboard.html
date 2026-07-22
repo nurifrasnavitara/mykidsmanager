@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Dashboard — My Kids Manager</title>
+<meta name="theme-color" content="#FBC02D">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-row">
+    <div>
+      <div class="greeting" id="greetingText">Halo 👋</div>
+      <h1>My Kids Manager</h1>
+    </div>
+    <div class="flex gap-8">
+      <button class="header-icon-btn" data-toggle-theme aria-label="Ganti tema"></button>
+      <button class="header-icon-btn" id="logoutBtn" aria-label="Keluar"><i class="fa-solid fa-right-from-bracket"></i></button>
+    </div>
+  </div>
+</header>
+
+<main class="container floating-card" data-ptr>
+
+  <!-- Family profile card -->
+  <div class="card card-glass slide-up" id="familyCard"></div>
+
+  <!-- Child cards -->
+  <div class="section-title"><h2>Anak-anak</h2></div>
+  <div class="stagger" id="childrenList" style="display:flex;flex-direction:column;gap:14px;"></div>
+
+  <!-- Ringkasan hari ini -->
+  <div class="section-title"><h2>Ringkasan Hari Ini</h2></div>
+  <div class="hscroll" id="summaryScroll"></div>
+
+  <!-- Menu utama -->
+  <div class="section-title"><h2>Menu Utama</h2></div>
+  <div class="menu-grid">
+    <a href="wallet.html" class="menu-item"><span class="menu-icon">💰</span>Wallet</a>
+    <a href="saving.html" class="menu-item"><span class="menu-icon">🏦</span>Tabungan</a>
+    <a href="needs.html" class="menu-item"><span class="menu-icon">🛒</span>Kebutuhan</a>
+    <a href="school.html" class="menu-item"><span class="menu-icon">📚</span>Sekolah</a>
+    <a href="health.html" class="menu-item"><span class="menu-icon">❤️</span>Kesehatan</a>
+    <a href="wishlist.html" class="menu-item"><span class="menu-icon">🎁</span>Wishlist</a>
+    <a href="#" class="menu-item" data-soon><span class="menu-icon">📝</span>Catatan</a>
+    <a href="report.html" class="menu-item"><span class="menu-icon">📊</span>Laporan</a>
+    <a href="#" class="menu-item" data-soon><span class="menu-icon">⚙️</span>Pengaturan</a>
+    <a href="profile.html" class="menu-item"><span class="menu-icon">👨‍👩‍👧</span>Profil Anak</a>
+  </div>
+
+  <!-- Timeline -->
+  <div class="section-title"><h2>Aktivitas Terbaru</h2><a href="report.html">Lihat semua</a></div>
+  <div class="card" id="timelineCard"></div>
+
+</main>
+
+<nav class="bottom-nav">
+  <a href="dashboard.html" class="nav-item" data-page="dashboard.html"><i class="fa-solid fa-house"></i>Home</a>
+  <a href="wallet.html" class="nav-item" data-page="wallet.html"><i class="fa-solid fa-wallet"></i>Wallet</a>
+  <a href="#" class="nav-fab ripple" id="quickActionBtn"><i class="fa-solid fa-plus"></i></a>
+  <a href="report.html" class="nav-item" data-page="report.html"><i class="fa-solid fa-chart-simple"></i>Laporan</a>
+  <a href="profile.html" class="nav-item" data-page="profile.html"><i class="fa-solid fa-user"></i>Profil</a>
+</nav>
+
+<!-- Quick action sheet -->
+<div id="quickSheet" class="quick-sheet" style="display:none;position:fixed;inset:0;z-index:150;">
+  <div class="quick-backdrop" style="position:absolute;inset:0;background:rgba(0,0,0,.4);"></div>
+  <div class="card slide-up" style="position:absolute;left:12px;right:12px;bottom:96px;max-width:456px;margin:0 auto;">
+    <h3 class="fw-700" style="margin-bottom:12px;">Aksi Cepat</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <a href="wallet.html?action=topup" class="btn btn-ghost ripple">💰 Top Up</a>
+      <a href="wallet.html?action=expense" class="btn btn-ghost ripple">🧾 Pengeluaran</a>
+      <a href="saving.html?action=save" class="btn btn-ghost ripple">🏦 Menabung</a>
+      <a href="wishlist.html?action=add" class="btn btn-ghost ripple">🎁 Wishlist</a>
+      <a href="needs.html?action=add" class="btn btn-ghost ripple">🛒 Kebutuhan</a>
+      <a href="#" id="closeSheet" class="btn btn-outline ripple">Tutup</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

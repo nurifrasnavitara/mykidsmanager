@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Laporan — My Kids Manager</title>
+<meta name="theme-color" content="#FBC02D">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-row">
+    <div>
+      <div class="greeting"><a href="dashboard.html" style="color:inherit;"><i class="fa-solid fa-arrow-left"></i></a></div>
+      <h1>Laporan</h1>
+    </div>
+    <button class="header-icon-btn" data-toggle-theme aria-label="Ganti tema"></button>
+  </div>
+</header>
+
+<main class="container floating-card" data-ptr>
+  <div class="card card-glass slide-up flex items-center justify-between">
+    <span class="text-soft text-sm">Pilih Anak</span>
+    <select id="childSelect" style="padding:8px 12px;border:none;background:var(--secondary);border-radius:10px;"></select>
+  </div>
+
+  <div class="flex gap-12 mt-16">
+    <button id="exportPdfBtn" class="btn btn-outline btn-block ripple"><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
+    <button id="exportExcelBtn" class="btn btn-outline btn-block ripple"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+  </div>
+
+  <div class="section-title"><h2>Pengeluaran Bulanan</h2></div>
+  <div class="card"><canvas id="chartExpense" height="180"></canvas></div>
+
+  <div class="section-title"><h2>Tabungan</h2></div>
+  <div class="card"><canvas id="chartSaving" height="180"></canvas></div>
+
+  <div class="section-title"><h2>Kategori Pengeluaran</h2></div>
+  <div class="card"><canvas id="chartCategory" height="200"></canvas></div>
+
+  <div class="section-title"><h2>Semua Aktivitas</h2></div>
+  <div id="fullTimeline" style="display:flex;flex-direction:column;gap:10px;"></div>
+</main>
+
+<nav class="bottom-nav">
+  <a href="dashboard.html" class="nav-item" data-page="dashboard.html"><i class="fa-solid fa-house"></i>Home</a>
+  <a href="wallet.html" class="nav-item" data-page="wallet.html"><i class="fa-solid fa-wallet"></i>Wallet</a>
+  <a href="needs.html" class="nav-fab ripple"><i class="fa-solid fa-plus"></i></a>
+  <a href="report.html" class="nav-item active" data-page="report.html"><i class="fa-solid fa-chart-simple"></i>Laporan</a>
+  <a href="profile.html" class="nav-item" data-page="profile.html"><i class="fa-solid fa-user"></i>Profil</a>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/report.js"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Masuk — My Kids Manager</title>
+<meta name="theme-color" content="#FBC02D">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="no-nav">
+
+  <header class="app-header">
+    <div class="header-row">
+      <div>
+        <div class="greeting">Selamat datang di</div>
+        <h1>My Kids Manager</h1>
+      </div>
+      <button class="header-icon-btn" data-toggle-theme aria-label="Ganti tema"></button>
+    </div>
+  </header>
+
+  <main class="container floating-card slide-up">
+    <div class="card">
+      <div style="text-align:center;margin-bottom:18px;">
+        <div style="font-size:38px;">🔐</div>
+        <h2 style="font-size:17px;font-weight:700;margin-top:6px;">Masuk ke Akun</h2>
+        <p class="text-soft text-sm mt-8">Pantau kebutuhan &amp; tabungan si kecil</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Email</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="email" placeholder="ayah@keluarga.com" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="password" placeholder="••••••••" required>
+            <button type="button" id="pwToggle" aria-label="Tampilkan password"><i class="fa-solid fa-eye"></i></button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between mt-8" style="margin-bottom:20px;">
+          <label class="flex items-center gap-8 text-sm text-soft">
+            <input type="checkbox" id="remember"> Ingat saya
+          </label>
+          <a href="#" id="forgotPassword" class="text-sm fw-600" style="color:var(--accent);">Lupa password?</a>
+        </div>
+
+        <button type="submit" id="loginBtn" class="btn btn-primary btn-block ripple">Masuk</button>
+      </form>
+
+      <div class="flex items-center gap-12 mt-16" style="margin:18px 0;">
+        <div style="flex:1;height:1px;background:var(--secondary);"></div>
+        <span class="text-soft text-sm">atau</span>
+        <div style="flex:1;height:1px;background:var(--secondary);"></div>
+      </div>
+
+      <div id="googleBtnContainer" style="display:flex;justify-content:center;"></div>
+      <button id="googleLoginBtn" class="btn btn-outline btn-block ripple" style="display:none;">
+        <i class="fa-brands fa-google"></i> Masuk dengan Google
+      </button>
+
+      <p class="text-soft text-sm" style="text-align:center;margin-top:18px;">
+        Demo: isi email &amp; password apa saja untuk masuk
+      </p>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+<script src="js/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
